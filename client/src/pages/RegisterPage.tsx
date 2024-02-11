@@ -9,12 +9,12 @@ import {
 import {useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {LoginFormSchema} from "@/formSchemas.tsx";
+import {LoginFormSchema, RegisterFormSchema} from "@/formSchemas.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
 const LoginPage = () => {
-    const form = useForm<z.infer<typeof LoginFormSchema>>({
+    const form = useForm<z.infer<typeof RegisterFormSchema>>({
         resolver: zodResolver(LoginFormSchema),
         defaultValues: {
             email: "",
@@ -22,7 +22,7 @@ const LoginPage = () => {
         }
     });
 
-    const onSubmit = (values: z.infer<typeof LoginFormSchema>) => {
+    const onSubmit = (values: z.infer<typeof RegisterFormSchema>) => {
         console.log(values);
     }
 
@@ -31,8 +31,21 @@ const LoginPage = () => {
             <Form {...form}>
                 <form action="" onSubmit={form.handleSubmit(onSubmit)}
                       className={`space-y-5 p-6 w-1/4
-                                border-2 border-black dark:border-white
-                                m-0-auto rounded-2xl`}>
+                      border-2 border-black dark:border-white
+                      m-0-auto rounded-2xl`}>
+                    <FormField
+                        control={form.control}
+                        name="login"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Логин</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Логин" {...field}/>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name="email"
@@ -54,6 +67,19 @@ const LoginPage = () => {
                                 <FormLabel>Пароль</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Пароль" type={"password"} {...field}/>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Подтверждение пароля</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Подтверждение пароля" type={"password"} {...field}/>
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>

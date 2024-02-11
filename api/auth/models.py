@@ -5,7 +5,7 @@ class User(Base):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(type_=BIGINT, primary_key=True)
-    name: Mapped[str] = mapped_column()
+    login: Mapped[str] = mapped_column()
     email: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
 

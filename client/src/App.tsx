@@ -1,12 +1,14 @@
-import React from 'react';
-import './App.css';
+import { useState } from 'react'
+import './App.css'
 
 function App() {
-    return (
-        <div>
-            Lorem ipsum!
-        </div>
-    );
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+      Lorem ipsum!
+    </>
+  )
 }
 
-export default App;
+export default App

@@ -1,15 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import LoginPage from "@/pages/login/LoginPage.tsx";
 import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from "@/components/navbar/Navbar.tsx";
 
 function App() {
 
     return (
         <>
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                {/*<LoginPage/>*/}
-                lorem
+                <Navbar/>
             </ThemeProvider>
         </>
     )

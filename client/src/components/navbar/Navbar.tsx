@@ -1,11 +1,10 @@
 import React from 'react';
-import {Button} from "@/components/ui/button.tsx";
+import ThemeToggler from "@/components/ThemeToggler/ThemeToggler.tsx";
 
 const Navbar = () => {
     return (
         <div>
-            <Button variant="outline">Button</Button>
-
+            <ThemeToggler/>
         </div>
     );
 };

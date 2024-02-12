@@ -1,17 +1,20 @@
-from fastapi import APIRouter, Response
+import json
+from fastapi import APIRouter, Body, Request, Response
 from api.auth.crud import add_user, login_user
 from api.auth.schemas import LoginData, RegisterData
 
 router = APIRouter(prefix='/auth')
 
 @router.post('/login')
-def login(data: LoginData):
+async def login(request: Request):
+    data = LoginData(**(await request.json()))
     res = login_user(data)
 
-    return Response(res)
+    return Response(json.dumps(res))
 
 @router.post('/register')
-def register(data: RegisterData):
+async def register(request: Request):
+    data = RegisterData(**(await request.json()))
     add_user(data)
 
     return Response({

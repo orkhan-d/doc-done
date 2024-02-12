@@ -23,13 +23,36 @@ const LoginPage = () => {
     });
 
     const onSubmit = (values: z.infer<typeof LoginFormSchema>) => {
-        console.log(values);
+        fetch("http://127.0.0.1:8000/auth/login", {
+            method: "POST",
+            body: JSON.stringify(values)
+        })
+            .then(async (data) => {
+                if(!data.ok)
+                    throw {
+                        data: await data.json(),
+                        error: Error()
+                    }
+                return await data.json();
+            })
+            .catch(({data}) => {
+                if(data.detail.code==422) {
+                    form.setError('email', {
+                        message: 'Неверные данные!',
+                        type: 'invalid_string'
+                    });
+                    form.setError('password', {
+                        message: 'Неверные данные!',
+                        type: 'invalid_string'
+                    });
+                }
+        })
     }
 
     return (
         <div className={"items-center justify-center flex flex-1 h-full"}>
             <Form {...form}>
-                <form action="" onSubmit={form.handleSubmit(onSubmit)}
+                <form action="http://127.0.0.1:8000/auth/login" method={"POST"} onSubmit={form.handleSubmit(onSubmit)}
                       className={`space-y-5 p-6 w-1/4
                                 border-2 border-black dark:border-white
                                 m-0-auto rounded-2xl`}>

@@ -12,24 +12,50 @@ import {z} from "zod";
 import {LoginFormSchema, RegisterFormSchema} from "@/formSchemas.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import loginPage from "@/pages/LoginPage.tsx";
+import {json} from "react-router-dom";
 
 const LoginPage = () => {
     const form = useForm<z.infer<typeof RegisterFormSchema>>({
-        resolver: zodResolver(LoginFormSchema),
+        resolver: zodResolver(RegisterFormSchema),
         defaultValues: {
+            login: "",
             email: "",
             password: "",
+            confirmPassword: ""
         }
     });
 
     const onSubmit = (values: z.infer<typeof RegisterFormSchema>) => {
-        console.log(values);
+        fetch("http://127.0.0.1:8000/auth/register", {
+            method: "POST",
+            body: JSON.stringify(values)
+        }).then(async (data) => {
+            if(!data.ok) {
+                const json = await data.json();
+                throw {
+                    json: json,
+                    error: Error()
+                }
+            }
+            return data.json()
+        })
+            .then(json => console.log(json))
+            .catch(({json}) => {
+                if(json.detail.code==422){
+                    form.setError('email', {
+                        message: 'Такой e-mail уже существует!',
+                        type: 'invalid_string'
+                    });
+                }
+            })
     }
 
     return (
         <div className={"items-center justify-center flex flex-1 h-full"}>
             <Form {...form}>
                 <form action="" onSubmit={form.handleSubmit(onSubmit)}
+                      onError={() => console.log("error")}
                       className={`space-y-5 p-6 w-1/4
                       border-2 border-black dark:border-white
                       m-0-auto rounded-2xl`}>

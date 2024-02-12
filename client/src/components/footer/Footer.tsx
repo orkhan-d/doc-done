@@ -1,8 +1,5 @@
-import ThemeToggler from "@/components/ThemeToggler/ThemeToggler.tsx";
-import {Link} from "react-router-dom";
 import {Button} from "@/components/ui/button.tsx";
-import {GitHubLogoIcon, InstagramLogoIcon, MoonIcon, SunIcon} from "@radix-ui/react-icons";
-import {flushSync} from "react-dom";
+import {GitHubLogoIcon, InstagramLogoIcon} from "@radix-ui/react-icons";
 
 const Footer = () => {
     return (

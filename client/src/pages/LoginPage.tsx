@@ -13,7 +13,11 @@ import {LoginFormSchema} from "@/formSchemas.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
+import {useNavigate} from "react-router-dom";
+
 const LoginPage = () => {
+    const navigate = useNavigate();
+
     const form = useForm<z.infer<typeof LoginFormSchema>>({
         resolver: zodResolver(LoginFormSchema),
         defaultValues: {
@@ -23,9 +27,11 @@ const LoginPage = () => {
     });
 
     const onSubmit = (values: z.infer<typeof LoginFormSchema>) => {
-        fetch("http://127.0.0.1:8000/auth/login", {
+
+        fetch("http://localhost:8000/auth/login", {
             method: "POST",
-            body: JSON.stringify(values)
+            credentials: 'include',
+            body: JSON.stringify(values),
         })
             .then(async (data) => {
                 if(!data.ok)
@@ -34,6 +40,11 @@ const LoginPage = () => {
                         error: Error()
                     }
                 return await data.json();
+            })
+            .then(json => {
+                json = JSON.parse(json);
+                localStorage.setItem('access-token', json.access_token);
+                navigate('/');
             })
             .catch(({data}) => {
                 if(data.detail.code==422) {
@@ -52,7 +63,7 @@ const LoginPage = () => {
     return (
         <div className={"items-center justify-center flex flex-1 h-full"}>
             <Form {...form}>
-                <form action="http://127.0.0.1:8000/auth/login" method={"POST"} onSubmit={form.handleSubmit(onSubmit)}
+                <form method={"POST"} onSubmit={form.handleSubmit(onSubmit)}
                       className={`space-y-5 p-6 w-1/4
                                 border-2 border-black dark:border-white
                                 m-0-auto rounded-2xl`}>

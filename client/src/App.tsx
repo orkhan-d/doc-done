@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar/Navbar.tsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import LoginPage from "@/pages/LoginPage.tsx";
 import NotFoundPage from "@/pages/NotFoundPage.tsx";
+import MainPage from "@/pages/MainPage.tsx";
 import RegisterPage from "@/pages/RegisterPage.tsx";
 import Footer from "@/components/footer/Footer.tsx";
 
@@ -16,6 +17,7 @@ function App() {
                     <Navbar/>
                     <Routes>
                         <Route path="*" element={<NotFoundPage/>}/>
+                        <Route path="/" element={<MainPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/register" element={<RegisterPage/>}/>
                     </Routes>

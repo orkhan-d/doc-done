@@ -6,10 +6,15 @@ from api.auth.routers import router
 
 dotenv.load_dotenv()
 
+origins = [
+    "http://localhost:5173",
+    "http://localhost",
+]
+
 app = FastAPI(debug=True)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

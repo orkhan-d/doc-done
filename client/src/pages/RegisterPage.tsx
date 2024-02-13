@@ -9,13 +9,14 @@ import {
 import {useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {LoginFormSchema, RegisterFormSchema} from "@/formSchemas.tsx";
+import {RegisterFormSchema} from "@/formSchemas.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import loginPage from "@/pages/LoginPage.tsx";
-import {json} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+
     const form = useForm<z.infer<typeof RegisterFormSchema>>({
         resolver: zodResolver(RegisterFormSchema),
         defaultValues: {
@@ -27,7 +28,7 @@ const LoginPage = () => {
     });
 
     const onSubmit = (values: z.infer<typeof RegisterFormSchema>) => {
-        fetch("http://127.0.0.1:8000/auth/register", {
+        fetch("http://localhost:8000/auth/register", {
             method: "POST",
             body: JSON.stringify(values)
         }).then(async (data) => {
@@ -38,9 +39,14 @@ const LoginPage = () => {
                     error: Error()
                 }
             }
-            return data.json()
+
+            return await data.json();
         })
-            .then(json => console.log(json))
+            .then(json => {
+                json = JSON.parse(json);
+                localStorage.setItem('access-token', json.access_token);
+                navigate('/');
+            })
             .catch(({json}) => {
                 if(json.detail.code==422){
                     form.setError('email', {
@@ -54,7 +60,7 @@ const LoginPage = () => {
     return (
         <div className={"items-center justify-center flex flex-1 h-full"}>
             <Form {...form}>
-                <form action="" onSubmit={form.handleSubmit(onSubmit)}
+                <form onSubmit={form.handleSubmit(onSubmit)}
                       onError={() => console.log("error")}
                       className={`space-y-5 p-6 w-1/4
                       border-2 border-black dark:border-white

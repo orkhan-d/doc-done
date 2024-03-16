@@ -7,8 +7,7 @@ from api.auth.routers import router
 dotenv.load_dotenv()
 
 origins = [
-    "http://localhost:5173",
-    "http://localhost",
+    "http://localhost:3000"
 ]
 
 app = FastAPI(debug=True)
@@ -20,4 +19,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+app.include_router(router, prefix='/api')

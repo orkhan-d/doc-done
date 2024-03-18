@@ -29,6 +29,10 @@ def get_user(email: str):
         user = sess.query(User).filter(User.email == email).first()
         return user
 
+def get_user_by_id(id_: int):
+    with Session() as sess:
+        user = sess.query(User).filter(User.id==id_).first()
+        return user
 
 def add_user(data: RegisterData):
     if get_user(data.email):

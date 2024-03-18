@@ -1,14 +1,9 @@
-import json
-from re import RegexFlag
-from fastapi import APIRouter, Body, Request, Response
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from api.auth.crud import add_user, login_user
 from api.auth.schemas import LoginData, RegisterData
 
 router = APIRouter(prefix='/auth')
-
-from datetime import datetime as dt
-import pytz
 
 @router.post('/login')
 async def login(data: LoginData):

@@ -2,7 +2,8 @@ import dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.auth.routers import router
+from api.auth.routes import router as authRouter
+from api.documents.routes import router as docsRouter
 
 dotenv.load_dotenv()
 
@@ -19,4 +20,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router, prefix='/api')
+app.include_router(authRouter, prefix='/api')
+app.include_router(docsRouter, prefix='/api')
